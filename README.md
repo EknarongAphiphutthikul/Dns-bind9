@@ -1,26 +1,27 @@
 # **Dns-bind9**
 
 ## Prepare System
-    Multiple VM Ubuntu version 20.04 on Hyper-V
-    Example : https://github.com/EknarongAphiphutthikul/Hyper-V/blob/main/script.txt
-
+- Multiple VM Ubuntu version 20.04 on Hyper-V
+- Example  [set up hyper-v on windows10]
 ## Update Package On Ubuntu 20.04
 ```sh
 sudo apt-get update
 ```
-## show hostname
+## Show hostname
 ```sh
 hostnamectl
 ```
-## set hostname
+## Set hostname
 ```sh
 hostnamectl set-hostname dns.ake.com
 ```
-## show ip
+## Show ip
 ```sh
 ifconfig
 ```
-## install bind9
+## Install bind9
 ```sh
 sudo apt-get install bind9 bind9utils
 ```
+
+[set up hyper-v on windows10]: <https://github.com/EknarongAphiphutthikul/Hyper-V>

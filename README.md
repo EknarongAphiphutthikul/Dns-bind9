@@ -21,7 +21,101 @@ ifconfig
 ```
 ## Install bind9
 ```sh
-sudo apt-get install bind9 bind9utils
+sudo apt-get install bind9 bind9utils bind9-doc bind9-dnsutils bind9-host
 ```
+## Check version bind9
+```sh
+named -v
+```
+## Check version and build options bind9
+```sh
+named -V
+```
+## Check Status Service
+```sh
+systemctl status named
+```
+## Start Service
+```sh
+sudo systemctl start named
+```
+## Enable auto start at boot time
+```sh
+sudo systemctl enable named
+```
+## Get listens on TCP and UDP port 53
+```sh
+sudo netstat -lnptu | grep named
+```
+## Check rndc status
+```sh
+sudo rndc status
+```
+## Enable recursion service for outsite network
+- edit file named.conf.options
+    ```sh
+    sudo nano /etc/bind/named.conf.options
+    ```
+        options {
+            directory "/var/cache/bind";
+
+            // If there is a firewall between you and nameservers you want
+            // to talk to, you may need to fix the firewall to allow multiple
+            // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+            // If your ISP provided one or more IP addresses for stable
+            // nameservers, you probably want to use them as forwarders.
+            // Uncomment the following block, and insert the addresses replacing
+            // the all-0's placeholder.
+
+            // forwarders {
+            //      8.8.8.8;
+            //};
+
+            //========================================================================
+            // If BIND logs error messages about the root key being expired,
+            // you will need to update your keys.  See https://www.isc.org/bind-keys
+            //========================================================================
+            dnssec-validation auto;
+
+            listen-on-v6 { any; };
+
+            // hide version number from clients for security reasons.
+            version "not currently available";
+
+            // optional - BIND default behavior is recursion
+            recursion yes;
+
+            // provide recursion service to trusted clients only
+            allow-recursion { 127.0.0.1; 192.168.0.0/24; 169.254.0.0/16; };
+
+            // enable the query log
+            querylog yes;
+        };
+-  Check Config
+    ```sh
+    sudo named-checkconf
+    ```
+- Restart Bind9
+   ```sh
+   sudo systemctl restart named
+   ```
+- Check firewall
+  ```sh
+  sudo ufw status
+  ```
+- Allow Port 53
+  ```sh
+  sudo ufw allow 53/tcp
+  sudo ufw allow 53/udp
+  ```
+- Test Connect From Anathor VM
+  ```sh
+  dig A google.com @169.254.19.105
+  ```
+- View Log message of bind9
+  ```sh
+  sudo journalctl -eu named
+  ```
 
 [set up hyper-v on windows10]: <https://github.com/EknarongAphiphutthikul/Hyper-V>

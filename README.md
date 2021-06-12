@@ -45,6 +45,10 @@ ifconfig
         dhcp4: false
         addresses:
           -  169.254.19.105/16
+        nameservers:
+          search: [ invalid ]
+          addresses:
+            - 127.0.0.1
       eth1:
         dhcp4: true
     version: 2
@@ -153,6 +157,36 @@ sudo rndc status
 - View Log message of bind9
   ```sh
   sudo journalctl -eu named
+  ```
+## Setting the Default DNS Resolver on Ubuntu 20.04 Server
+- The default recursive resolver can be seen with this command
+  ```sh
+  systemd-resolve --status
+  ```
+- As you can see, BIND isn’t the default. If you run the following command on the BIND server,
+  ```sh
+  dig A facebook.com
+  ```
+- Set BIND as the default resolver
+  ```sh
+  sudo nano /etc/systemd/resolved.conf
+  ```
+  ```console
+  [Resolve]
+  DNS=127.0.0.1
+  #FallbackDNS=
+  #Domains=
+  #LLMNR=no
+  #MulticastDNS=no
+  #DNSSEC=no
+  #DNSOverTLS=no
+  #Cache=no-negative
+  #DNSStubListener=yes
+  #ReadEtcHosts=yes
+  ```
+  ```sh
+  sudo systemctl restart systemd-resolved
+  systemd-resolve --status
   ```
 
 [set up hyper-v on windows10]: <https://github.com/EknarongAphiphutthikul/Hyper-V>

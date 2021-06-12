@@ -19,6 +19,40 @@ hostnamectl set-hostname dns.ake.com
 ```sh
 ifconfig
 ```
+## Set ipv4 internal network (vEthernet-Internal-ME)
+- On cloud : you'll need to disable.
+  ```sh
+  sudo nano /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+  ```
+  ```console
+  network: {config: disabled}
+  ```
+- Show file config in netplan
+  ```sh
+  ls /etc/netplan/
+  ```
+  ```console
+  00-installer-config.yaml
+  ```
+- Edit file config in netplan
+  ```sh
+  sudo nano /etc/netplan/00-installer-config.yaml
+  ```
+  ```console
+  network:
+    ethernets:
+      eth0:
+        dhcp4: false
+        addresses:
+          -  169.254.19.105/16
+      eth1:
+        dhcp4: true
+    version: 2
+  ```
+- Apply Config
+  ```sh
+  sudo netplan apply
+  ```
 ## Install bind9
 ```sh
 sudo apt-get install bind9 bind9utils bind9-doc bind9-dnsutils bind9-host
@@ -48,6 +82,7 @@ sudo systemctl enable named
 sudo netstat -lnptu | grep named
 ```
 ## Check rndc status
+check the status of the BIND name server
 ```sh
 sudo rndc status
 ```
@@ -56,42 +91,44 @@ sudo rndc status
     ```sh
     sudo nano /etc/bind/named.conf.options
     ```
-        options {
-            directory "/var/cache/bind";
+    ```console
+    options {
+        directory "/var/cache/bind";
 
-            // If there is a firewall between you and nameservers you want
-            // to talk to, you may need to fix the firewall to allow multiple
-            // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+        // If there is a firewall between you and nameservers you want
+        // to talk to, you may need to fix the firewall to allow multiple
+        // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
 
-            // If your ISP provided one or more IP addresses for stable
-            // nameservers, you probably want to use them as forwarders.
-            // Uncomment the following block, and insert the addresses replacing
-            // the all-0's placeholder.
+        // If your ISP provided one or more IP addresses for stable
+        // nameservers, you probably want to use them as forwarders.
+        // Uncomment the following block, and insert the addresses replacing
+        // the all-0's placeholder.
 
-            // forwarders {
-            //      8.8.8.8;
-            //};
+        // forwarders {
+        //      8.8.8.8;
+        //};
 
-            //========================================================================
-            // If BIND logs error messages about the root key being expired,
-            // you will need to update your keys.  See https://www.isc.org/bind-keys
-            //========================================================================
-            dnssec-validation auto;
+        //========================================================================
+        // If BIND logs error messages about the root key being expired,
+        // you will need to update your keys.  See https://www.isc.org/bind-keys
+        //========================================================================
+        dnssec-validation auto;
 
-            listen-on-v6 { any; };
+        listen-on-v6 { any; };
 
-            // hide version number from clients for security reasons.
-            version "not currently available";
+        // hide version number from clients for security reasons.
+        version "not currently available";
 
-            // optional - BIND default behavior is recursion
-            recursion yes;
+        // optional - BIND default behavior is recursion
+        recursion yes;
 
-            // provide recursion service to trusted clients only
-            allow-recursion { 127.0.0.1; 192.168.0.0/24; 169.254.0.0/16; };
+        // provide recursion service to trusted clients only
+        allow-recursion { 127.0.0.1; 192.168.0.0/24; 169.254.0.0/16; };
 
-            // enable the query log
-            querylog yes;
-        };
+        // enable the query log
+        querylog yes;
+    };
+    ```
 -  Check Config
     ```sh
     sudo named-checkconf

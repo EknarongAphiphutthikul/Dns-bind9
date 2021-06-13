@@ -189,4 +189,15 @@ sudo rndc status
   systemd-resolve --status
   ```
 
+## How to Disable IPv6 in BIND
+```sh
+sudo nano /etc/default/named
+```
+```console
+OPTIONS="-u bind -4"
+```
+```sh
+sudo systemctl restart named
+```
+
 [set up hyper-v on windows10]: <https://github.com/EknarongAphiphutthikul/Hyper-V>

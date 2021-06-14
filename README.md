@@ -45,10 +45,6 @@
           dhcp4: false
           addresses:
             -  169.254.19.105/16
-          nameservers:
-            search: [ invalid ]
-            addresses:
-              - 127.0.0.1
         eth1:
           dhcp4: true
       version: 2
@@ -263,7 +259,21 @@
 ----
 <br/>
 
-## Setting the Default DNS Resolver on Ubuntu 20.04 Server
+## How to Disable IPv6 in BIND
+```sh
+sudo nano /etc/default/named
+```
+```console
+OPTIONS="-u bind -4"
+```
+```sh
+sudo systemctl restart named
+```
+
+----
+<br/>
+
+## Setting the Default DNS Resolver on Ubuntu 20.04 Server (Client)
 - The default recursive resolver can be seen with this command
   ```sh
   systemd-resolve --status
@@ -293,19 +303,5 @@
   sudo systemctl restart systemd-resolved
   systemd-resolve --status
   ```
-
-----
-<br/>
-
-## How to Disable IPv6 in BIND
-```sh
-sudo nano /etc/default/named
-```
-```console
-OPTIONS="-u bind -4"
-```
-```sh
-sudo systemctl restart named
-```
 
 [set up hyper-v on windows10]: <https://github.com/EknarongAphiphutthikul/Hyper-V>

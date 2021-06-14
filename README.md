@@ -13,7 +13,7 @@
   ```
 - Set hostname
   ```sh
-  hostnamectl set-hostname dns.ake.com
+  sudo hostnamectl set-hostname dns.ake.com
   ```
 - Show ip
   ```sh

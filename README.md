@@ -198,6 +198,10 @@
   rancher.ake.com.        IN      A       169.254.19.115
   jenkins.ake.com.        IN      A       169.254.19.103
   gitserver.ake.com.      IN      A       169.254.19.104
+  registry.ake.com.       IN      A       169.254.19.106
+  kube-master.ake.com.    IN      A       169.254.19.110
+  kube-worker1.ake.com.   IN      A       169.254.19.111
+  kube-worker2.ake.com.   IN      A       169.254.19.112
   ```
 - Creating the Reverse Zone File
   ```sh
@@ -225,6 +229,10 @@
   115.19  IN      PTR     rancher.ake.com.        ; 169.254.19.115
   103.19  IN      PTR     jenkins.ake.com.        ; 169.254.19.103
   104.19  IN      PTR     gitserver.ake.com.      ; 169.254.19.104
+  106.19  IN      PTR     registry.ake.com.       ; 169.254.19.106
+  110.19  IN      PTR     kube-master.ake.com.    ; 169.254.19.110
+  111.19  IN      PTR     kube-worker1.ake.com.   ; 169.254.19.111
+  112.19  IN      PTR     kube-worker2.ake.com.   ; 169.254.19.112
   ```
 - Check config zone  
   check the "ake.com" forward zone configuration

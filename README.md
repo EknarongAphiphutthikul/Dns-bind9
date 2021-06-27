@@ -312,4 +312,4 @@ sudo systemctl restart named
   systemd-resolve --status
   ```
 
-[set up hyper-v on windows10]: <https://github.com/EknarongAphiphutthikul/Hyper-V>
+[set up hyper-v on windows10]: <https://github.com/EknarongAphiphutthikul/Install-Hyper-V>
